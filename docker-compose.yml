@@ -9,9 +9,12 @@ services:
      - ./build:/usr/share/nginx/html
 #    ports:
 #     - "8080:80"
-    environment:
-     - NGINX_HOST=ark-mods.nebre.net
-     - NGINX_PORT=80
+    env_file:
+      - path: ./.env
+        required: true
+#    environment:
+#     - NGINX_HOST=ark-mods.nebre.net
+#     - NGINX_PORT=80
     restart: unless-stopped
     networks:
       - default
@@ -19,9 +22,14 @@ services:
     labels:
       - com.centurylinklabs.watchtower.enable=true
       - "traefik.enable=true"
-      - "traefik.http.routers.arkmodpack.rule=Host(`ark-mods.nebre.net`)"
-      - "traefik.http.routers.arkmodpack.entrypoints=websecure"
-      - "traefik.http.routers.arkmodpack.tls.certresolver=myresolver"
+      - "traefik.http.routers.arkmods-http.rule=Host(`ark-mods.nebre.net`,`ark-mods-origin.nebre.net`)"
+      - "traefik.http.routers.arkmods-http.entrypoints=web"
+      - "traefik.http.routers.arkmods.rule=Host(`ark-mods.nebre.net`,`ark-mods-origin.nebre.net`)"
+      - "traefik.http.routers.arkmods.entrypoints=websecure"
+      - "traefik.http.routers.arkmods.tls.certresolver=myresolver"
+      - "traefik.http.routers.arkmods.tls=true"
+      - "traefik.http.middlewares.arkmods-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.arkmods-https.redirectscheme.permanent=true"
 
 networks:
     proxy:
