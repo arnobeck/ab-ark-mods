@@ -48,19 +48,6 @@ const config = {
 				fail(401, {'error.message': message});
 				return;
 			}
-		},
-		static: {
-			// cache everything in `static` for 1 hour
-			cache: 3600
-	  
-			// // cache large images for one hour, small images for ten minutes, don't cache anything else
-			// cache: ({ filename, size }) => {
-			//   if (filename.startsWith('images') {
-			// 	return size > 1_000_000 ? 3600 : 600;
-			//   }
-	  
-			//   return 0;
-			// }
 		}
 	}
 };
