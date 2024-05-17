@@ -1,0 +1,29 @@
+services:
+  web:
+#    image: nginx:stable-bookworm
+    build:
+      context: build
+      dockerfile: ../Dockerfile
+    volumes:
+     - ./templates:/etc/nginx/templates
+     - ./build:/usr/share/nginx/html
+#    ports:
+#     - "8080:80"
+    environment:
+     - NGINX_HOST=ark-mods.nebre.net
+     - NGINX_PORT=80
+    restart: unless-stopped
+    networks:
+      - default
+      - proxy
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.arkmodpack.rule=Host(`ark-mods.nebre.net`)"
+      - "traefik.http.routers.arkmodpack.entrypoints=websecure"
+      - "traefik.http.routers.arkmodpack.tls.certresolver=myresolver"
+
+networks:
+    proxy:
+      external: true
+
