@@ -5,8 +5,8 @@ services:
       context: .
       dockerfile: ./Dockerfile
     volumes:
-     - ./templates:/etc/nginx/templates
-     - ./build:/usr/share/nginx/html
+    #  - ./templates:/etc/nginx/templates
+    #  - ./build:/usr/share/nginx/html
 #    ports:
 #     - "8080:80"
     env_file:
