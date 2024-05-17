@@ -1,0 +1,7 @@
+#!/bin/bash
+
+alias dco="docker compose"
+
+git pull
+dco build --pull && \
+dco up -d
