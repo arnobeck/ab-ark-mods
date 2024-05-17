@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    volumes:
+    # volumes:
     #  - ./templates:/etc/nginx/templates
     #  - ./build:/usr/share/nginx/html
 #    ports:
