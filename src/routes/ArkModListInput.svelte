@@ -165,7 +165,7 @@
 
 		<div slot="item" let:item={item} let:label={label}>
 			{@html label}
-			 / <span style="color:{item.id}">{item.id}</span>
+			 <!-- / <span style="color:{item.id}">{item.id}</span> -->
 		</div>
 
 	</AutoComplete>
