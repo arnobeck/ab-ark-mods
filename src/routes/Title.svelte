@@ -26,7 +26,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		line-height: 0.8;
+		line-height: 0.9;
 		flex: 0.6;
 	}
 	.title > span {
