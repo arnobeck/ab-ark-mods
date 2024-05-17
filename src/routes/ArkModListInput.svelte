@@ -25,21 +25,21 @@
 	// 	}
 	// });
 
-	// /**
-    //  * @param {string} params
-    //  */
-	// function parseProps(params)
-	// {
-	// 	let formated_params = [];
-	// 	let toHandle = params.split(",");
-	// 	// toHandle.forEach(function (mod) {
-	// 	for(let i=0 ; i<toHandle.length ; i++){
-	// 		let mod = toHandle[i];
-	// 		formated_params.push( parseInt(mod.trim()) );
-	// 	};
-	// 	// });
-	// 	return formated_params;
-	// }
+	/**
+     * @param {string} params
+     */
+	function parseProps(params)
+	{
+		let formated_params = [];
+		let toHandle = params.split(" ");
+		// toHandle.forEach(function (mod) {
+		for(let i=0 ; i<toHandle.length ; i++){
+			let mod = toHandle[i];
+			formated_params.push( parseInt(mod.trim()) );
+		};
+		// });
+		return formated_params;
+	}
 
 	// /**
     //  * @param {string} params
@@ -86,14 +86,36 @@
 	async function searchMod(keyword) {
 		const headers = {
 			// 'x-api-key': CS_ApiKey,
-			'Accept': 'application/json'
+			'Accept': 'application/json',
+			'Content-Type':'application/json'
 		};
-		const url = CS_ApiEndpoint + "/mods/search?gameId="+CS_gameId+"&searchFilter="+encodeURIComponent(keyword);
+		let url = CS_ApiEndpoint + "/mods/search?gameId="+CS_gameId+"&searchFilter="+encodeURIComponent(keyword);
+		let formated_params = parseProps(keyword);
+		let isNumList = false;
+		if(formated_params.length >0 && Number.isInteger(formated_params[0])){
+			// console.log("num !", keyword, formated_params);
+			isNumList = true;
+		}
+		if(isNumList){
+			url = CS_ApiEndpoint + "/mods";
+		}
 
-		const response = await fetch(url, {
+		let fetch_options = {
 			method: 'GET',
 			headers: headers
-		});
+		};
+		if(isNumList){
+			const POST_data = {
+				'modIds': formated_params,
+				'filterPcOnly': false
+			};
+			fetch_options = {
+				'method': 'POST',
+				'headers': headers,
+				'body': JSON.stringify(POST_data)
+			};
+		}
+		const response = await fetch(url, fetch_options);
 		let responseData = await response.json();
 		/**
          * @type {any[]}
@@ -102,6 +124,7 @@
 		responseData.data.forEach(function (/** @type {any} */ mod) {
 			mods.push(mod);
 		});
+		console.log("mods",mods);
 		return mods;
 	}
 	/**
