@@ -1,7 +1,5 @@
 #!/bin/bash
 
-alias dco="docker compose"
-
 git pull
-dco build --pull && \
-dco up -d
+docker compose build --pull && \
+docker compose up -d
