@@ -15,7 +15,10 @@
 	<nav>
 		<span>Ark Mods is not affiliated with
 			<a href="https://www.studiowildcard.com/" target="_blank" rel="external noopener">
-				Studio Wildcard <img src="/wildcard.png" class="w-6 h-6 inline" alt="Studio Wildcard's logo">
+				Studio Wildcard <img src="/wildcard.png" class="w-6 h-6 inline" alt="Studio Wildcard's logo"> 
+			</a>
+			or <a href="https://www.curseforge.com/" target="_blank" rel="external noopener">
+				CurseForge <img src="/curseforge.png" class="w-6 h-6 inline" alt="CurseForge's logo">
 			</a>
 		</span>
 	</nav>
