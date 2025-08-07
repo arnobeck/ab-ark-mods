@@ -1,5 +1,5 @@
 <script>
-	export let title = '';
+	export let title = "";
 </script>
 
 <h1 class="title">
@@ -11,8 +11,8 @@
 	</span> -->
 
 	{#if title}
-		<strong><i>Mod pack</i></strong>
-		<br/>
+		<!-- <strong><i>Mod pack</i></strong>
+		<br/> -->
 		<span>{title}</span>
 	{:else}
 		<span>Mods list</span>
