@@ -1,9 +1,9 @@
 // import adapter from '@sveltejs/adapter-auto';
 import adapter from '@sveltejs/adapter-static';
 // import adapter from '@sveltejs/adapter-node';
-import { redirect, fail } from '@sveltejs/kit';
-// import adapter from 'svelte-adapter-bun';
+import { fail, redirect } from '@sveltejs/kit';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+// import { adapter as adapterBun } from 'svelte-adapter-bun';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -25,7 +25,7 @@ const config = {
 		// }),
 
 		// bun
-		// adapter: adapter({
+		// adapter: adapterBun({
 		// 	// default options are shown. On some platforms
 		// 	// these options are set automatically — see below
 		// 	out: 'build',
@@ -55,12 +55,13 @@ const config = {
 					return;
 				}
 				console.log("path",path)
-				if (path === '' || path === '/') {
+				// if (path === '' || path === '/') {
+				if (path === '') {
 					redirect(302, 'https://curseforge.com/ark-survival-ascended/');
 					return;
-				} else if (path === '/edit/') {
-					redirect(307, '/edit');
-					return;
+				// } else if (path === '/edit/') {
+				// 	redirect(307, '/edit');
+				// 	return;
 				}
 
 				// otherwise fail the build
