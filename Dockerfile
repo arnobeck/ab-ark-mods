@@ -5,7 +5,8 @@ COPY package.json ./
 RUN bun --bun --smol install
 
 COPY . .
-RUN bun --bun --smol run build
+# RUN bun --bun --smol run build
+RUN bun --bun --smol run vite build
 
 ENV NODE_ENV=production
 
