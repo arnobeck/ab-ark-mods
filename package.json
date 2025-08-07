@@ -37,7 +37,8 @@
     "dotenv": "16.4.5"
   },
   "exports": {
-  ".": {
-    "svelte": "./build/index.html"
+    ".": {
+      "svelte": "./build/index.html"
+    }
   }
 }
