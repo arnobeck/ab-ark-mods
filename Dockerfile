@@ -3,7 +3,6 @@ FROM oven/bun:1.1.8
 WORKDIR /app
 COPY package.json ./
 RUN bun --bun --smol install
-RUN bun --bun install @rollup/rollup-linux-x64-gnu
 
 COPY . .
 # RUN bun --bun --smol run build
