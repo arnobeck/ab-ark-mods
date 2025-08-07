@@ -40,5 +40,8 @@
     ".": {
       "svelte": "./build/index.html"
     }
-  }
+  },
+  "trustedDependencies": [
+    "svelte-preprocess"
+  ]
 }
