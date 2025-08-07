@@ -35,5 +35,9 @@
   "type": "module",
   "dependencies": {
     "dotenv": "16.4.5"
+  },
+  "exports": {
+  ".": {
+    "svelte": "./build/index.html"
   }
 }
