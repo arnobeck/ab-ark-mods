@@ -1,19 +1,21 @@
+const basePath = process.env.BASE_PATH || '/';
+
 const server = Bun.serve({
     port: process.env.PORT || 3000,
     fetch(req) {
         const url = new URL(req.url);
         let path = url.pathname;
         
-        // Handle BASE_PATH if defined
-        const basePath = process.env.BASE_PATH || '';
-        if (basePath && path.startsWith(basePath)) {
-            path = path.slice(basePath.length);
+        // Remove base path from the request path
+        if (basePath !== '/' && path.startsWith(basePath)) {
+            path = path.slice(basePath.length) || '/';
         }
 
         // Serve static files from the build directory
         try {
             if (path === '/') path = '/index.html';
-            const file = Bun.file(`build${path}`);
+            const filePath = `build${path}`;
+            const file = Bun.file(filePath);
             const exists = await file.exists();
             
             if (exists) {
@@ -28,4 +30,4 @@ const server = Bun.serve({
     },
 });
 
-console.log(`Listening on http://localhost:${server.port}`);
+console.log(`Server running at http://localhost:${server.port} with base path: ${basePath}`);
