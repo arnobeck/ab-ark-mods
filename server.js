@@ -1,3 +1,10 @@
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+
+// Obtenir le chemin absolu du répertoire courant
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const buildPath = join(__dirname, 'build');
+
 const server = Bun.serve({
     port: process.env.PORT || 3000,
     async fetch(req) {
@@ -5,19 +12,19 @@ const server = Bun.serve({
         let path = url.pathname;
         
         console.log('Requested path:', path);
+        console.log('Build path:', buildPath);
         
         // Handle BASE_PATH if defined
         const basePath = process.env.BASE_PATH || '';
         if (basePath && path.startsWith(basePath)) {
             path = path.slice(basePath.length);
-            console.log('Path after BASE_PATH handling:', path);
         }
 
         try {
             const staticFileExtensions = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json|map)$/;
 
             if (path.match(staticFileExtensions)) {
-                const filePath = `build${path}`;
+                const filePath = join(buildPath, path);
                 console.log('Trying to serve static file:', filePath);
                 
                 const file = Bun.file(filePath);
@@ -32,7 +39,7 @@ const server = Bun.serve({
             }
 
             console.log('Serving index.html for SPA route');
-            const indexHtml = Bun.file('build/index.html');
+            const indexHtml = Bun.file(join(buildPath, 'index.html'));
             const exists = await indexHtml.exists();
 
             if (!exists) {
@@ -55,4 +62,5 @@ const server = Bun.serve({
 
 console.log(`SPA server running on http://localhost:${server.port}`);
 console.log('Current working directory:', process.cwd());
-console.log('Build directory exists:', await Bun.file('build').exists());
+console.log('Build directory:', buildPath);
+console.log('Build directory exists:', await Bun.file(buildPath).exists());
