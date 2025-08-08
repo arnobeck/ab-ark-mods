@@ -10,6 +10,7 @@ COPY . .
 ENV NODE_ENV=production
 ENV VITE_BUILD_MODE=production
 RUN bun --bun --smol run build
+RUN ls -lah build ; pwd
 
 
 # Runtime stage
