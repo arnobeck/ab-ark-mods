@@ -77,7 +77,7 @@ console.log('- BASE_PATH:', process.env.BASE_PATH);
 console.log('- NODE_ENV:', process.env.NODE_ENV);
 console.log('Current working directory:', process.cwd());
 console.log('Absolute build directory:', buildPath);
-console.log('Build directory exists:', await Bun.file(buildPath).exists());
+// console.log('Build directory exists:', await Bun.file(buildPath).exists());
 
 // Liste le contenu du répertoire courant pour le debug
 try {
