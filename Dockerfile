@@ -7,7 +7,6 @@ RUN bun --bun --smol install
 
 COPY . .
 RUN bun --bun --smol run build
-RUN ls -lah
 
 
 # Runtime stage
