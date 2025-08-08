@@ -3,10 +3,10 @@ FROM oven/bun:1.1.8
 WORKDIR /app
 # COPY package.json ./
 COPY . .
+RUN ls -lah
 
 RUN bun --bun --smol install
 
-RUN ls -lah
 
 # COPY . .
 # RUN bun --bun --smol run build

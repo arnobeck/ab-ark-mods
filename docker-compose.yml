@@ -1,6 +1,7 @@
 services:
   web:
 #    image: nginx:stable-bookworm
+#    image: ark-mods-web:safe
     build:
       context: .
       dockerfile: ./Dockerfile
