@@ -11,22 +11,37 @@ const server = Bun.serve({
         }
 
         try {
-            // Pour les assets statiques (js, css, images, etc.)
-            if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
-                const file = Bun.file(`build${path}`);
+            // Liste des extensions pour les fichiers statiques
+            const staticFileExtensions = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json|map)$/;
+
+            // Si c'est un fichier statique
+            if (path.match(staticFileExtensions)) {
+                const filePath = `build${path}`;
+                const file = Bun.file(filePath);
                 const exists = await file.exists();
+                
                 if (exists) {
                     return new Response(file);
                 }
+                // Si le fichier statique n'existe pas, retourner 404
+                return new Response('Not Found', { status: 404 });
             }
 
-            // Pour tout le reste, on sert index.html (SPA behavior)
+            // Pour toutes les autres routes, servir index.html (comportement SPA)
             const indexHtml = Bun.file('build/index.html');
+            const exists = await indexHtml.exists();
+
+            if (!exists) {
+                console.error('index.html not found in build directory');
+                return new Response('Server Error: index.html not found', { status: 500 });
+            }
+
             return new Response(indexHtml, {
                 headers: {
                     'Content-Type': 'text/html; charset=utf-8'
                 }
             });
+
         } catch (error) {
             console.error('Error serving file:', error);
             return new Response('Server Error', { status: 500 });
