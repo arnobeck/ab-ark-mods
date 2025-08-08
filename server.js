@@ -4,30 +4,34 @@ const server = Bun.serve({
         const url = new URL(req.url);
         let path = url.pathname;
         
+        console.log('Requested path:', path);
+        
         // Handle BASE_PATH if defined
         const basePath = process.env.BASE_PATH || '';
         if (basePath && path.startsWith(basePath)) {
             path = path.slice(basePath.length);
+            console.log('Path after BASE_PATH handling:', path);
         }
 
         try {
-            // Liste des extensions pour les fichiers statiques
             const staticFileExtensions = /\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|json|map)$/;
 
-            // Si c'est un fichier statique
             if (path.match(staticFileExtensions)) {
                 const filePath = `build${path}`;
+                console.log('Trying to serve static file:', filePath);
+                
                 const file = Bun.file(filePath);
                 const exists = await file.exists();
                 
                 if (exists) {
+                    console.log('Static file found and served');
                     return new Response(file);
                 }
-                // Si le fichier statique n'existe pas, retourner 404
+                console.log('Static file not found');
                 return new Response('Not Found', { status: 404 });
             }
 
-            // Pour toutes les autres routes, servir index.html (comportement SPA)
+            console.log('Serving index.html for SPA route');
             const indexHtml = Bun.file('build/index.html');
             const exists = await indexHtml.exists();
 
@@ -43,10 +47,12 @@ const server = Bun.serve({
             });
 
         } catch (error) {
-            console.error('Error serving file:', error);
+            console.error('Error serving file:', error, error.stack);
             return new Response('Server Error', { status: 500 });
         }
     },
 });
 
 console.log(`SPA server running on http://localhost:${server.port}`);
+console.log('Current working directory:', process.cwd());
+console.log('Build directory exists:', await Bun.file('build').exists());
