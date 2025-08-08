@@ -4,7 +4,8 @@
 // export const trailingSlash = 'always';
 
 
-// Configuration pour SPA
-export const ssr = false;    // Désactive le SSR
-export const prerender = false;  // Désactive le prerendering
-export const csr = true;     // Active le client-side rendering
+// Configuration SPA pour SvelteKit 2.0
+export const trailingSlash = 'never';  // Nouveau dans SvelteKit 2.0
+export const ssr = false;
+export const prerender = false;
+export const csr = true;
