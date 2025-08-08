@@ -1,31 +1,38 @@
 <script>
-	import { Store_ArkModList } from './StoreArk.js';
-	import { copy } from '@svelte-put/copy';
+	import { Store_ArkModList, Store_ShareTitle } from "./StoreArk.js";
 
 	export let modListDetailed = [];
-	export let title = '';
+	// export let title = '';
+	// export let title = '';
 
 	/**
-     * @type {HTMLButtonElement}
-     */
+	 * @type {HTMLButtonElement}
+	 */
 	let trigger;
-	let copied = '';
-  	function handleCopied(e /** @type {CustomEvent<CopyDetail>)} */) {
-    	copied = e.target.value;
+	let copied = "";
+	function handleCopied(e /** @type {CustomEvent<CopyDetail>)} */) {
+		copied = e.target.value;
 		// console.log(copied, e);
 		console.log("copied=", copied);
-  	}
-
+	}
 </script>
 
 <div class="shareurl">
-	<input type="string" bind:value="{title}" placeholder="Modpack Title" />
-	{#if title}
-	<a href="/modpack/{title}/{$Store_ArkModList.join(",")}" target="_blank">Share</a>
+	<input
+		type="string"
+		bind:value={$Store_ShareTitle}
+		placeholder="Modpack Title"
+	/>
+	{#if $Store_ShareTitle}
+		<a
+			href="/modpack/{$Store_ShareTitle}/{$Store_ArkModList.join(',')}"
+			target="_blank">Share</a
+		>
 	{:else}
-	<a href="/modpack/{$Store_ArkModList.join(",")}" target="_blank">Share</a>
+		<a href="/modpack/{$Store_ArkModList.join(',')}" target="_blank"
+			>Share</a
+		>
 	{/if}
-
 </div>
 
 <style>
