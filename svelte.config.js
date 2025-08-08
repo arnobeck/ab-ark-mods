@@ -34,6 +34,7 @@ const config = {
 		// }),
 
 		// static
+		ssr: false,
 		adapter: adapter({
 			// default options are shown. On some platforms
 			// these options are set automatically — see below
@@ -49,6 +50,8 @@ const config = {
 		// },
 
 		prerender: {
+			default: false,
+            entries: [],
 			handleHttpError: ({ path, referrer, message }) => {
 				// ignore deliberate link to shiny 404 page
 				if (path === '/not-found') {
