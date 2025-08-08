@@ -16,4 +16,4 @@ RUN bun --bun --smol run build
 ENV NODE_ENV=production
 
 EXPOSE 3000
-ENTRYPOINT ["bun", "./build"]
+ENTRYPOINT ["bun", "/app/build"]
