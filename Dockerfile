@@ -6,7 +6,7 @@ COPY package.json bun.lockb ./
 RUN bun --bun --smol install
 
 COPY . .
-RUN bun --bun --smol run build
+RUN bun --bun --smol run vite build
 
 
 # Runtime stage

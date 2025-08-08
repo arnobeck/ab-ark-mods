@@ -1,28 +1,32 @@
-const basePath = process.env.BASE_PATH || '/';
-
 const server = Bun.serve({
     port: process.env.PORT || 3000,
     fetch(req) {
         const url = new URL(req.url);
         let path = url.pathname;
         
-        // Remove base path from the request path
-        if (basePath !== '/' && path.startsWith(basePath)) {
-            path = path.slice(basePath.length) || '/';
+        // Handle BASE_PATH if defined
+        const basePath = process.env.BASE_PATH || '';
+        if (basePath && path.startsWith(basePath)) {
+            path = path.slice(basePath.length);
         }
 
-        // Serve static files from the build directory
         try {
-            if (path === '/') path = '/index.html';
-            const filePath = `build${path}`;
-            const file = Bun.file(filePath);
-            const exists = await file.exists();
-            
-            if (exists) {
-                return new Response(file);
+            // Pour les assets statiques (js, css, images, etc.)
+            if (path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$/)) {
+                const file = Bun.file(`build${path}`);
+                const exists = await file.exists();
+                if (exists) {
+                    return new Response(file);
+                }
             }
-            // Fallback to index.html for SPA routing
-            return new Response(Bun.file('build/index.html'));
+
+            // Pour tout le reste, on sert index.html (SPA behavior)
+            const indexHtml = Bun.file('build/index.html');
+            return new Response(indexHtml, {
+                headers: {
+                    'Content-Type': 'text/html; charset=utf-8'
+                }
+            });
         } catch (error) {
             console.error('Error serving file:', error);
             return new Response('Server Error', { status: 500 });
@@ -30,4 +34,4 @@ const server = Bun.serve({
     },
 });
 
-console.log(`Server running at http://localhost:${server.port} with base path: ${basePath}`);
+console.log(`SPA server running on http://localhost:${server.port}`);
