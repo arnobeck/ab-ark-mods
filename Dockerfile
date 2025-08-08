@@ -19,4 +19,4 @@ ENV PORT=3000
 ENV BUILD_DIR=./build
 ENV BASE_PATH=""
 
-CMD ["bun", "run", "server.js"]
+CMD ["bun", "--bun", "--smol", "run", "server.js"]
