@@ -1,22 +1,22 @@
-FROM oven/bun:1.1.8
-
+# Build stage
+FROM oven/bun:1.1.8 as builder
 WORKDIR /app
-COPY package.json ./
-COPY bun.lockb ./
-# COPY . .
-RUN ls -lah
-
+COPY package.json bun.lockb ./
 RUN bun --bun --smol install
-
-
 COPY . .
 RUN bun --bun --smol run build
-# RUN bun --bun --smol run vite build
+
+# Runtime stage
+FROM oven/bun:1.1.8-slim
+WORKDIR /app
+COPY --from=builder /app/build build/
+COPY server.js .
+
+EXPOSE 3000
 
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV BUILD_DIR=./build
+ENV BASE_PATH=""
 
-EXPOSE 3000
-# ENTRYPOINT ["bun", "/app/build"]
-ENTRYPOINT ["bun", "run", "./server.js"]
+CMD ["bun", "run", "server.js"]
