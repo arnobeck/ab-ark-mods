@@ -10,8 +10,6 @@ export default defineConfig({
             output: {
                 manualChunks: undefined
             }
-        },
-        // Désactive le SSR
-        ssr: false
+        }
     }
 });
