@@ -11,6 +11,12 @@ const server = Bun.serve({
         const url = new URL(req.url);
         let path = url.pathname;
         
+        // Gérer le hash dans l'URL
+        const hashIndex = path.indexOf('#');
+        if (hashIndex !== -1) {
+            path = path.substring(0, hashIndex);
+        }
+        
         console.log('Requested path:', path);
         console.log('Build path:', buildPath);
         

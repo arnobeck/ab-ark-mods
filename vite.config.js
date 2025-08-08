@@ -3,6 +3,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
     plugins: [sveltekit()],
+
+    base: '',
     
     // Optimisations pour Vite 5
     build: {

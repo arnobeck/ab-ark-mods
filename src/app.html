@@ -8,5 +8,16 @@
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
+		<script>
+			// Script pour gérer le hash routing
+			(function() {
+				if (window.location.hash) {
+					const path = window.location.hash.slice(1);
+					if (path && path !== window.location.pathname) {
+						window.history.replaceState(null, '', path);
+					}
+				}
+			})();
+		</script>
 	</body>
 </html>
