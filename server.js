@@ -1,8 +1,8 @@
+import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-// Utiliser un chemin absolu
 const buildPath = join(process.cwd(), process.env.BUILD_DIR?.replace('./', '') || 'build');
 
 const server = Bun.serve({
@@ -47,8 +47,8 @@ const server = Bun.serve({
                 console.error('index.html not found at:', indexPath);
                 // Liste le contenu du répertoire pour le debug
                 try {
-                    const buildDir = Bun.file(buildPath);
-                    console.log('Build directory contents:', await buildDir.list());
+                    const files = await readdir(buildPath);
+                    console.log('Build directory contents:', files);
                 } catch (e) {
                     console.error('Could not list build directory:', e);
                 }
@@ -68,7 +68,7 @@ const server = Bun.serve({
     },
 });
 
-// Ajout de plus de logs pour le debug
+// Debug logs
 console.log(`SPA server running on http://localhost:${server.port}`);
 console.log('Environment variables:');
 console.log('- PORT:', process.env.PORT);
@@ -81,8 +81,8 @@ console.log('Build directory exists:', await Bun.file(buildPath).exists());
 
 // Liste le contenu du répertoire courant pour le debug
 try {
-    const currentDir = Bun.file(process.cwd());
-    console.log('Current directory contents:', await currentDir.list());
+    const files = await readdir(process.cwd());
+    console.log('Current directory contents:', files);
 } catch (e) {
     console.error('Could not list current directory:', e);
 }
