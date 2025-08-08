@@ -49,8 +49,6 @@ const config = {
 		// },
 
 		prerender: {
-			default: false,
-            entries: [],
 			handleHttpError: ({ path, referrer, message }) => {
 				// ignore deliberate link to shiny 404 page
 				if (path === '/not-found') {
