@@ -1,20 +1,20 @@
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
-// Obtenir le chemin absolu du répertoire courant
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const buildPath = join(__dirname, 'build');
+// Utiliser la variable d'environnement BUILD_DIR si définie
+const buildPath = process.env.BUILD_DIR || join(__dirname, 'build');
 
 const server = Bun.serve({
     port: process.env.PORT || 3000,
-    async fetch(req) {
+    fetch(req) {
         const url = new URL(req.url);
         let path = url.pathname;
         
         console.log('Requested path:', path);
         console.log('Build path:', buildPath);
         
-        // Handle BASE_PATH if defined
+        // Utiliser la variable d'environnement BASE_PATH
         const basePath = process.env.BASE_PATH || '';
         if (basePath && path.startsWith(basePath)) {
             path = path.slice(basePath.length);
@@ -34,16 +34,18 @@ const server = Bun.serve({
                     console.log('Static file found and served');
                     return new Response(file);
                 }
-                console.log('Static file not found');
+                console.log('Static file not found:', filePath);
                 return new Response('Not Found', { status: 404 });
             }
 
             console.log('Serving index.html for SPA route');
-            const indexHtml = Bun.file(join(buildPath, 'index.html'));
+            const indexPath = join(buildPath, 'index.html');
+            console.log('Looking for index.html at:', indexPath);
+            const indexHtml = Bun.file(indexPath);
             const exists = await indexHtml.exists();
 
             if (!exists) {
-                console.error('index.html not found in build directory');
+                console.error('index.html not found at:', indexPath);
                 return new Response('Server Error: index.html not found', { status: 500 });
             }
 
@@ -61,6 +63,11 @@ const server = Bun.serve({
 });
 
 console.log(`SPA server running on http://localhost:${server.port}`);
+console.log('Environment variables:');
+console.log('- PORT:', process.env.PORT);
+console.log('- BUILD_DIR:', process.env.BUILD_DIR);
+console.log('- BASE_PATH:', process.env.BASE_PATH);
+console.log('- NODE_ENV:', process.env.NODE_ENV);
 console.log('Current working directory:', process.cwd());
 console.log('Build directory:', buildPath);
 console.log('Build directory exists:', await Bun.file(buildPath).exists());
