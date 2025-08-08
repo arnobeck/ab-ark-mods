@@ -1,14 +1,19 @@
 # Build stage
 FROM oven/bun:1.1.8 as builder
 WORKDIR /app
+
 COPY package.json bun.lockb ./
 RUN bun --bun --smol install
+
 COPY . .
 RUN bun --bun --smol run build
+RUN ls -lah
+
 
 # Runtime stage
 FROM oven/bun:1.1.8-slim
 WORKDIR /app
+
 COPY --from=builder /app/build build/
 COPY server.js .
 
