@@ -17,7 +17,7 @@ RUN ls -lah build ; pwd
 FROM oven/bun:1.1.8-slim
 WORKDIR /app
 
-COPY --from=builder /app/build build/
+COPY --from=builder /app/build /app/build
 COPY server.js .
 
 EXPOSE 3000
@@ -25,7 +25,7 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV VITE_BUILD_MODE=production
 ENV PORT=3000
-ENV BUILD_DIR=./build
+ENV BUILD_DIR=/app/build
 ENV BASE_PATH=""
 
 CMD ["bun", "--bun", "--smol", "run", "server.js"]

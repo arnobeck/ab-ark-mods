@@ -2,8 +2,8 @@ import { join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-// Utiliser la variable d'environnement BUILD_DIR si définie
-const buildPath = process.env.BUILD_DIR || join(__dirname, 'build');
+// Utiliser un chemin absolu
+const buildPath = join(process.cwd(), process.env.BUILD_DIR?.replace('./', '') || 'build');
 
 const server = Bun.serve({
     port: process.env.PORT || 3000,
@@ -14,7 +14,6 @@ const server = Bun.serve({
         console.log('Requested path:', path);
         console.log('Build path:', buildPath);
         
-        // Utiliser la variable d'environnement BASE_PATH
         const basePath = process.env.BASE_PATH || '';
         if (basePath && path.startsWith(basePath)) {
             path = path.slice(basePath.length);
@@ -46,6 +45,13 @@ const server = Bun.serve({
 
             if (!exists) {
                 console.error('index.html not found at:', indexPath);
+                // Liste le contenu du répertoire pour le debug
+                try {
+                    const buildDir = Bun.file(buildPath);
+                    console.log('Build directory contents:', await buildDir.list());
+                } catch (e) {
+                    console.error('Could not list build directory:', e);
+                }
                 return new Response('Server Error: index.html not found', { status: 500 });
             }
 
@@ -62,6 +68,7 @@ const server = Bun.serve({
     },
 });
 
+// Ajout de plus de logs pour le debug
 console.log(`SPA server running on http://localhost:${server.port}`);
 console.log('Environment variables:');
 console.log('- PORT:', process.env.PORT);
@@ -69,5 +76,13 @@ console.log('- BUILD_DIR:', process.env.BUILD_DIR);
 console.log('- BASE_PATH:', process.env.BASE_PATH);
 console.log('- NODE_ENV:', process.env.NODE_ENV);
 console.log('Current working directory:', process.cwd());
-console.log('Build directory:', buildPath);
+console.log('Absolute build directory:', buildPath);
 console.log('Build directory exists:', await Bun.file(buildPath).exists());
+
+// Liste le contenu du répertoire courant pour le debug
+try {
+    const currentDir = Bun.file(process.cwd());
+    console.log('Current directory contents:', await currentDir.list());
+} catch (e) {
+    console.error('Could not list current directory:', e);
+}
