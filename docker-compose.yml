@@ -36,6 +36,7 @@ services:
       - "traefik.http.routers.arkmods.entrypoints=websecure"
       - "traefik.http.routers.arkmods.tls.certresolver=myresolver"
       - "traefik.http.routers.arkmods.tls=true"
+      - "traefik.http.services.arkmods.loadbalancer.server.port=3000"
       - "traefik.http.middlewares.arkmods-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.arkmods-https.redirectscheme.permanent=true"
 
