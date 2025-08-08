@@ -4,7 +4,7 @@
 // export const trailingSlash = 'always';
 
 
-
+// Désactive SSR et active le mode SPA
 export const ssr = false;
 export const prerender = false;
 export const csr = true;
