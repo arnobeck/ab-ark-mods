@@ -21,7 +21,7 @@ services:
       - default
       - proxy
     labels:
-      - com.centurylinklabs.watchtower.enable=true
+      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.arkmods-http.rule=Host(`ark-mods.nebre.net`,`ark-mods-origin.nebre.net`)"
       - "traefik.http.routers.arkmods-http.entrypoints=web"
