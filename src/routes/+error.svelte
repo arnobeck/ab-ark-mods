@@ -1,7 +1,7 @@
 <script>
-	import { page } from "$app/stores";
+	// import { page } from "$app/stores";
 
-	$: foo = $page.url.searchParams.get("modlist");
+	// $: foo = $page.url.searchParams.get("modlist");
 </script>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<h1>Error</h1>
-		{foo}
+
 		<p>Status: %sveltekit.status%</p>
 		<p>Message: %sveltekit.error.message%</p>
 	</body>
