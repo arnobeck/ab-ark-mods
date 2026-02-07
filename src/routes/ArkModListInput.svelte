@@ -1,17 +1,16 @@
 <script>
-	const CS_ApiEndpoint = 'https://api.curse.tools/v1/cf';
-	const CS_gameId = '083374';
+	const CS_ApiEndpoint = "https://api.curse.tools/v1";
+	const CS_gameId = "083374";
 
 	// props
-	export let ArkModList_param = '';
+	export let ArkModList_param = "";
 
-	import { Store_ArkModList, Store_ArkSelectedModList } from './StoreArk.js';
 	import AutoComplete from "simple-svelte-autocomplete";
-	import { onMount } from 'svelte';
+	import { Store_ArkModList, Store_ArkSelectedModList } from "./StoreArk.js";
 
 	/**
-     * @type {Promise<any[]>}
-     */
+	 * @type {Promise<any[]>}
+	 */
 	// let listArkMods;
 
 	// onMount(async () => {
@@ -26,24 +25,23 @@
 	// });
 
 	/**
-     * @param {string} params
-     */
-	function parseProps(params)
-	{
+	 * @param {string} params
+	 */
+	function parseProps(params) {
 		let formated_params = [];
 		let toHandle = params.split(" ");
 		// toHandle.forEach(function (mod) {
-		for(let i=0 ; i<toHandle.length ; i++){
+		for (let i = 0; i < toHandle.length; i++) {
 			let mod = toHandle[i];
-			formated_params.push( parseInt(mod.trim()) );
-		};
+			formated_params.push(parseInt(mod.trim()));
+		}
 		// });
 		return formated_params;
 	}
 
 	// /**
-    //  * @param {string} params
-    //  */
+	//  * @param {string} params
+	//  */
 	// async function searchModsByIdList(params)
 	// {
 	// 	let formated_params = parseProps(params);
@@ -77,65 +75,73 @@
 	// 	return await mods;
 	// }
 
-	
 	// let selectedColorsItems = [{"name":"France","alpha2Code":"FR","independent":false},{"name":"Bolivia (Plurinational State of)","alpha2Code":"BO","independent":false}];
 
 	/**
-     * @param {string} keyword
-     */
+	 * @param {string} keyword
+	 */
 	async function searchMod(keyword) {
 		const headers = {
 			// 'x-api-key': CS_ApiKey,
-			'Accept': 'application/json',
-			'Content-Type':'application/json'
+			Accept: "application/json",
+			"Content-Type": "application/json",
 		};
-		let url = CS_ApiEndpoint + "/mods/search?gameId="+CS_gameId+"&searchFilter="+encodeURIComponent(keyword);
+		let url =
+			CS_ApiEndpoint +
+			"/mods/search?gameId=" +
+			CS_gameId +
+			"&searchFilter=" +
+			encodeURIComponent(keyword);
 		let formated_params = parseProps(keyword);
 		let isNumList = false;
-		if(formated_params.length >0 && Number.isInteger(formated_params[0])){
+		if (
+			formated_params.length > 0 &&
+			Number.isInteger(formated_params[0])
+		) {
 			// console.log("num !", keyword, formated_params);
 			isNumList = true;
 		}
-		if(isNumList){
+		if (isNumList) {
 			url = CS_ApiEndpoint + "/mods";
 		}
 
 		let fetch_options = {
-			method: 'GET',
-			headers: headers
+			method: "GET",
+			headers: headers,
 		};
-		if(isNumList){
+		if (isNumList) {
 			const POST_data = {
-				'modIds': formated_params,
-				'filterPcOnly': false
+				modIds: formated_params,
+				filterPcOnly: false,
 			};
 			fetch_options = {
-				'method': 'POST',
-				'headers': headers,
-				'body': JSON.stringify(POST_data)
+				method: "POST",
+				headers: headers,
+				body: JSON.stringify(POST_data),
 			};
 		}
+		console.log("fetch_options", fetch_options, url);
 		const response = await fetch(url, fetch_options);
 		let responseData = await response.json();
 		/**
-         * @type {any[]}
-         */
+		 * @type {any[]}
+		 */
 		let mods /** @type {any[]} */ = [];
 		responseData.data.forEach(function (/** @type {any} */ mod) {
 			mods.push(mod);
 		});
-		console.log("mods",mods);
+		console.log("mods", mods);
 		return mods;
 	}
 	/**
-     * @type {any[]}
-     */
+	 * @type {any[]}
+	 */
 	let selectedItem;
 
 	/**
-     * @param {{ id: any; }} item
-     * @param {string} keywords
-     */
+	 * @param {{ id: any; }} item
+	 * @param {string} keywords
+	 */
 	function itemFilter(item, keywords) {
 		// return only colors which have nice: true
 		// console.log(keywords, $Store_ArkModList, item);
@@ -144,33 +150,29 @@
 
 	// items={$ArkSelectedModList}
 	// localFiltering={false}
-
 </script>
 
 <div class="counter">
-<p>
-	<AutoComplete
-		multiple=true
-		orderableSelection=true
-		labelFieldName="name"
-		valueFieldName="id"
-		items={$Store_ArkSelectedModList}
-		bind:selectedItem={$Store_ArkSelectedModList}
-		bind:value={$Store_ArkModList}
-		searchFunction={searchMod}
-		maxItemsToShowInList={10}
-		delay={200}
-		itemFilterFunction={itemFilter}
+	<p>
+		<AutoComplete
+			multiple="true"
+			orderableSelection="true"
+			labelFieldName="name"
+			valueFieldName="id"
+			items={$Store_ArkSelectedModList}
+			bind:selectedItem={$Store_ArkSelectedModList}
+			bind:value={$Store_ArkModList}
+			searchFunction={searchMod}
+			maxItemsToShowInList={10}
+			delay={200}
+			itemFilterFunction={itemFilter}
 		>
-
-		<div slot="item" let:item={item} let:label={label}>
-			{@html label}
-			 <!-- / <span style="color:{item.id}">{item.id}</span> -->
-		</div>
-
-	</AutoComplete>
-</p>
-
+			<div slot="item" let:item let:label>
+				{@html label}
+				<!-- / <span style="color:{item.id}">{item.id}</span> -->
+			</div>
+		</AutoComplete>
+	</p>
 </div>
 
 <style>
