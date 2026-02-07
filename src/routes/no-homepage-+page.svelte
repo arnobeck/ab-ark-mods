@@ -12,7 +12,7 @@
 	
 	let ArkModList_param = $page.url.hash.substring(1);
 
-	const CS_ApiEndpoint = 'https://api.curse.tools/v1/cf';
+	const CS_ApiEndpoint = 'https://api.curse.tools/v1';
 	const CS_gameId = '083374';
 
 
